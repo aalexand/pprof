@@ -115,16 +115,14 @@ func serveWebInterface(hostport string, p *profile.Profile, o *plugin.Options) e
 		Host:     host,
 		Port:     port,
 		Handlers: map[string]http.Handler{
-			"/":       http.HandlerFunc(ui.dot),
-			"/top":    http.HandlerFunc(ui.top),
-			"/disasm": http.HandlerFunc(ui.disasm),
-			"/source": http.HandlerFunc(ui.source),
-			"/peek":   http.HandlerFunc(ui.peek),
+			"/":           http.HandlerFunc(ui.dot),
+			"/top":        http.HandlerFunc(ui.top),
+			"/disasm":     http.HandlerFunc(ui.disasm),
+			"/source":     http.HandlerFunc(ui.source),
+			"/peek":       http.HandlerFunc(ui.peek),
+			"/flamegraph": http.HandlerFunc(ui.flamegraph),
 		},
 	}
-
-	go openBrowser("http://"+args.Hostport, o)
-	return server(args)
 }
 
 func defaultWebServer(args *plugin.HTTPServerArgs) error {
