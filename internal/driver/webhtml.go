@@ -198,6 +198,7 @@ View
 </div>
 </div>
 
+<<<<<<< HEAD
 <div class="menu-header">
 Refine
 <div class="menu">
@@ -209,6 +210,10 @@ Refine
 <a title="{{.Help.reset}}" href="{{.BaseURL}}">Reset</a>
 </div>
 </div>
+<button id="flamegraph">Flame Graph</button>
+
+<span id="home">{{.Title}}</span>
+>>>>>>> feat: button from main view
 
 <input id="searchbox" type="text" placeholder="Search regexp" autocomplete="off" autocapitalize="none" size=40>
 
@@ -464,6 +469,18 @@ function viewer(baseUrl, nodes) {
   'use strict';
 
   // Elements
+  const detailsButton = document.getElementById("details")
+  const detailsText = document.getElementById("detailtext")
+  const actionBox = document.getElementById("actionbox")
+  const listButton = document.getElementById("list")
+  const disasmButton = document.getElementById("disasm")
+  const resetButton = document.getElementById("reset")
+  const flameGraphButton = document.getElementById("flamegraph")
+  const peekButton = document.getElementById("peek")
+  const focusButton = document.getElementById("focus")
+  const showButton = document.getElementById("show")
+  const ignoreButton = document.getElementById("ignore")
+  const hideButton = document.getElementById("hide")
   const search = document.getElementById("searchbox")
   const graph0 = document.getElementById("graph0")
   const svg = (graph0 == null ? null : graph0.parentElement)
@@ -484,6 +501,15 @@ function viewer(baseUrl, nodes) {
     const detailsText = document.getElementById("detailtext")
     if (detailsText != null) detailsText.style.display = "none"
   }
+  function handleReset() { window.location.href = "/" }
+  function handleFlameGraph() { window.location.href = "/flamegraph" }
+  function handleList() { navigate("/weblist", "f", true) }
+  function handleDisasm() { navigate("/disasm", "f", true) }
+  function handlePeek() { navigate("/peek", "f", true) }
+  function handleFocus() { navigate("/", "f", false) }
+  function handleShow() { navigate("/", "s", false) }
+  function handleIgnore() { navigate("/", "i", false) }
+  function handleHide() { navigate("/", "h", false) }
 
   function handleKey(e) {
     if (e.keyCode != 13) return
@@ -730,6 +756,22 @@ function viewer(baseUrl, nodes) {
   addAction("details", handleDetails)
   addAction("closedetails", handleCloseDetails)
 
+  initPanAndZoom(svg, toggleSelect)
+
+  function bindButtons(evt) {
+    detailsButton.addEventListener(evt, handleDetails)
+    resetButton.addEventListener(evt, handleReset)
+    flameGraphButton.addEventListener(evt, handleFlameGraph)
+    listButton.addEventListener(evt, handleList)
+    disasmButton.addEventListener(evt, handleDisasm)
+    peekButton.addEventListener(evt, handlePeek)
+    focusButton.addEventListener(evt, handleFocus)
+    showButton.addEventListener(evt, handleShow)
+    ignoreButton.addEventListener(evt, handleIgnore)
+    hideButton.addEventListener(evt, handleHide)
+  }
+  bindButtons("click")
+  bindButtons("touchstart")
   search.addEventListener("input", handleSearch)
   search.addEventListener("keydown", handleKey)
 
