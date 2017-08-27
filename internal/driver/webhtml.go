@@ -503,6 +503,10 @@ function viewer(baseUrl, nodes) {
   }
   function handleReset() { window.location.href = "/" }
   function handleFlameGraph() { window.location.href = "/flamegraph" }
+
+  function handleReset() { window.location.href = baseUrl }
+  function handleTop() { navigate("/top", "f", false) }
+  function handleGraph() { navigate("/", "f", false) }
   function handleList() { navigate("/weblist", "f", true) }
   function handleDisasm() { navigate("/disasm", "f", true) }
   function handlePeek() { navigate("/peek", "f", true) }
@@ -772,6 +776,17 @@ function viewer(baseUrl, nodes) {
   }
   bindButtons("click")
   bindButtons("touchstart")
+  addAction("topbtn", handleTop)
+  addAction("graphbtn", handleGraph)
+  addAction("reset", handleReset)
+  addAction("peek", handlePeek)
+  addAction("list", handleList)
+  addAction("disasm", handleDisasm)
+  addAction("focus", handleFocus)
+  addAction("ignore", handleIgnore)
+  addAction("hide", handleHide)
+  addAction("show", handleShow)
+
   search.addEventListener("input", handleSearch)
   search.addEventListener("keydown", handleKey)
 
