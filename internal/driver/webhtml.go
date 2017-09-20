@@ -1066,6 +1066,8 @@ makeTopTable({{.Total}}, {{.Top}})
         flameGraph.resetZoom();
     }, true);
 </script>
+{{template "script" .}}
+<script>viewer({{.BaseURL}}, null)</script>
 </body>
 </html>
 {{end}}
