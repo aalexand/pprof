@@ -1003,6 +1003,8 @@ makeTopTable({{.Total}}, {{.Top}})
   </div>
   <div id="flamegraphdetails" class="flamegraph-details"></div>
 </div>
+{{template "script" .}}
+<script>viewer({{.BaseURL}}, {{.Nodes}})</script>
 {{template "d3script" .}}
 {{template "d3tipscript" .}}
 {{template "d3flamegraphscript" .}}
@@ -1045,10 +1047,6 @@ makeTopTable({{.Total}}, {{.Top}})
         .datum(data)
         .call(flameGraph);
 
-    function search(term) {
-        flameGraph.search(term);
-    }
-
     function clear() {
         flameGraph.clear();
     }
@@ -1066,9 +1064,30 @@ makeTopTable({{.Total}}, {{.Top}})
         flameGraph.width(width);
         flameGraph.resetZoom();
     }, true);
+
+    var searchbox = document.getElementById("searchbox");
+    var searchAlarm = null;
+
+    function selectMatching() {
+      searchAlarm = null;
+
+      if (searchbox.value != "") {
+        flameGraph.search(searchbox.value);
+      } else {
+        flameGraph.clear();
+      }
+    }
+
+    function handleSearch() {
+      // Delay expensive processing so a flurry of key strokes is handled once.
+      if (searchAlarm != null) {
+        clearTimeout(searchAlarm);
+      }
+      searchAlarm = setTimeout(selectMatching, 300);
+    }
+  
+    searchbox.addEventListener("input", handleSearch);
 </script>
-{{template "script" .}}
-<script>viewer({{.BaseURL}}, null)</script>
 </body>
 </html>
 {{end}}
