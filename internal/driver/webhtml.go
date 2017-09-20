@@ -1026,7 +1026,8 @@ makeTopTable({{.Total}}, {{.Top}})
         .transitionEase(d3.easeCubic)
         .sort(true)
         .title("")
-        .label(label);
+        .label(label)
+        .details(document.getElementById("flamegraphdetails"));
 
     var tip = d3.tip()
         .direction("s")
