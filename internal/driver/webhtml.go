@@ -1011,11 +1011,7 @@ makeTopTable({{.Total}}, {{.Top}})
 <script type="text/javascript">
     var data = {{.FlameGraph}};
     var label = function(d) {
-        {{if eq .FlameGraphUnit "nanoseconds"}}
-        return d.data.n + " (" + d3.format(".3f")(100 * (d.x1 - d.x0), 3) + "%, " + d3.format(".5f")(d.data.v / 1000000000) + " seconds)";
-        {{else}}
-        return d.data.n + " (" + d3.format(".3f")(100 * (d.x1 - d.x0), 3) + "%, " + d.data.v + " {{.FlameGraphUnit}})";
-        {{end}}
+        return d.data.n + " (" + d3.format(".3f")(100 * (d.x1 - d.x0), 3) + "%, " + d.data.l + ")";
     };
 
     var width = document.getElementById("chart").clientWidth;
@@ -1035,11 +1031,7 @@ makeTopTable({{.Total}}, {{.Top}})
         .direction("s")
         .offset([8, 0])
         .attr('class', 'd3-flame-graph-tip')
-        {{if eq .FlameGraphUnit "nanoseconds"}}
-        .html(function(d) { return "name: " + d.data.n + ", value: " + d3.format(".5f")(d.data.v / 1000000000); });
-        {{else}}
-        .html(function(d) { return "name: " + d.data.n + ", value: " + d.data.v; });
-        {{end}}
+        .html(function(d) { return "name: " + d.data.n + ", value: " + d.data.l; });
 
     flameGraph.tooltip(tip);
 
@@ -1054,7 +1046,7 @@ makeTopTable({{.Total}}, {{.Top}})
     function resetZoom() {
         flameGraph.resetZoom();
     }
-    
+
     window.addEventListener("resize", function() {
         var width = document.getElementById("chart").clientWidth;
         var graphs = document.getElementsByClassName("d3-flame-graph");
@@ -1085,7 +1077,7 @@ makeTopTable({{.Total}}, {{.Top}})
       }
       searchAlarm = setTimeout(selectMatching, 300);
     }
-  
+
     searchbox.addEventListener("input", handleSearch);
 </script>
 </body>
