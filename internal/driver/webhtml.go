@@ -471,18 +471,6 @@ function viewer(baseUrl, nodes) {
   'use strict';
 
   // Elements
-  const detailsButton = document.getElementById("details")
-  const detailsText = document.getElementById("detailtext")
-  const actionBox = document.getElementById("actionbox")
-  const listButton = document.getElementById("list")
-  const disasmButton = document.getElementById("disasm")
-  const resetButton = document.getElementById("reset")
-  const flameGraphButton = document.getElementById("flamegraph")
-  const peekButton = document.getElementById("peek")
-  const focusButton = document.getElementById("focus")
-  const showButton = document.getElementById("show")
-  const ignoreButton = document.getElementById("ignore")
-  const hideButton = document.getElementById("hide")
   const search = document.getElementById("searchbox")
   const graph0 = document.getElementById("graph0")
   const svg = (graph0 == null ? null : graph0.parentElement)
@@ -748,23 +736,6 @@ function viewer(baseUrl, nodes) {
 
   addAction("details", handleDetails)
   addAction("closedetails", handleCloseDetails)
-
-  initPanAndZoom(svg, toggleSelect)
-
-  function bindButtons(evt) {
-    detailsButton.addEventListener(evt, handleDetails)
-    resetButton.addEventListener(evt, handleReset)
-    flameGraphButton.addEventListener(evt, handleFlameGraph)
-    listButton.addEventListener(evt, handleList)
-    disasmButton.addEventListener(evt, handleDisasm)
-    peekButton.addEventListener(evt, handlePeek)
-    focusButton.addEventListener(evt, handleFocus)
-    showButton.addEventListener(evt, handleShow)
-    ignoreButton.addEventListener(evt, handleIgnore)
-    hideButton.addEventListener(evt, handleHide)
-  }
-  bindButtons("click")
-  bindButtons("touchstart")
 
   search.addEventListener("input", handleSearch)
   search.addEventListener("keydown", handleKey)
