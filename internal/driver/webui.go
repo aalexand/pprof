@@ -124,6 +124,9 @@ func serveWebInterface(hostport string, p *profile.Profile, o *plugin.Options) e
 			"/flamegraph": http.HandlerFunc(ui.flamegraph),
 		},
 	}
+
+	go openBrowser("http://"+args.Hostport, o)
+	return server(args)
 }
 
 func defaultWebServer(args *plugin.HTTPServerArgs) error {
