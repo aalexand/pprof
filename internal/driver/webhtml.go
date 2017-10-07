@@ -205,7 +205,6 @@ View
 </div>
 </div>
 
-<<<<<<< HEAD
 <div class="menu-header">
 Refine
 <div class="menu">
@@ -220,7 +219,6 @@ Refine
 <button id="flamegraph">Flame Graph</button>
 
 <span id="home">{{.Title}}</span>
->>>>>>> feat: button from main view
 
 <input id="searchbox" type="text" placeholder="Search regexp" autocomplete="off" autocapitalize="none" size=40>
 
