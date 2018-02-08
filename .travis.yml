@@ -53,6 +53,7 @@ addons:
 before_script:
   - go get -u github.com/golang/lint/golint honnef.co/go/tools/cmd/...   
   - |
+    env
     if [ "$TRAVIS_OS_NAME" = "osx" ]; then
       brew update
       if [ -z "$SKIP_GRAPHVIZ" ]; then brew install graphviz; fi
