@@ -159,8 +159,9 @@ var pprofVariables = variables{
 		"For time-based profiles, use seconds, milliseconds, nanoseconds, etc.",
 		"For memory profiles, use megabytes, kilobytes, bytes, etc.",
 		"Using auto will scale each value independently to the most natural unit.")},
-	"compact_labels": &variable{boolKind, "f", "", "Show minimal headers"},
-	"source_path":    &variable{stringKind, "", "", "Search path for source files"},
+	"compact_labels":     &variable{boolKind, "f", "", "Show minimal headers"},
+	"source_path":        &variable{stringKind, "", "", "Search path for source files"},
+	"remote_source_path": &variable{stringKind, "", "", "Path to strip from for source paths"},
 
 	// Filtering options
 	"nodecount": &variable{intKind, "-1", "", helpText(

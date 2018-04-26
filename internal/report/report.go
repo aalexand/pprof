@@ -77,8 +77,9 @@ type Options struct {
 
 	OutputUnit string // Units for data formatting in report.
 
-	Symbol     *regexp.Regexp // Symbols to include on disassembly report.
-	SourcePath string         // Search path for source files.
+	Symbol           *regexp.Regexp // Symbols to include on disassembly report.
+	SourcePath       string         // Search path for source files.
+	RemoteSourcePath string         // Paths to strip from source file paths.
 }
 
 // Generate generates a report as directed by the Report.

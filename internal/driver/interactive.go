@@ -229,8 +229,6 @@ func printCurrentOptions(p *profile.Profile, ui plugin.UI) {
 			}
 			// Add comments for all sample types in profile.
 			comment = "[" + strings.Join(st, " | ") + "]"
-		case n == "source_path":
-			continue
 		case n == "nodecount" && v == "-1":
 			comment = "default"
 		case v == "":

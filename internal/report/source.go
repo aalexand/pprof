@@ -63,7 +63,7 @@ func printSource(w io.Writer, rpt *Report) error {
 		}
 		sourcePath = wd
 	}
-	reader := newSourceReader(sourcePath)
+	reader := newSourceReader(sourcePath, o.RemoteSourcePath)
 
 	fmt.Fprintf(w, "Total: %s\n", rpt.formatValue(rpt.total))
 	for _, fn := range functions {
@@ -146,7 +146,7 @@ func PrintWebList(w io.Writer, rpt *Report, obj plugin.ObjTool, maxFiles int) er
 		}
 		sourcePath = wd
 	}
-	reader := newSourceReader(sourcePath)
+	reader := newSourceReader(sourcePath, o.RemoteSourcePath)
 
 	type fileFunction struct {
 		fileName, functionName string
@@ -516,7 +516,13 @@ func getMissingFunctionSource(filename string, asm map[int][]assemblyInstruction
 
 // sourceReader provides access to source code with caching of file contents.
 type sourceReader struct {
+	// searchPath is a filepath.ListSeparator-separated list of directories where
+	// source files should be searched.
 	searchPath string
+
+	// remotePath is a filepath.ListSeparator-separated list of paths to strip
+	// from profile source paths that start with that path.
+	remotePath string
 
 	// files maps from path name to a list of lines.
 	// files[*][0] is unused since line numbering starts at 1.
@@ -527,9 +533,10 @@ type sourceReader struct {
 	errors map[string]error
 }
 
-func newSourceReader(searchPath string) *sourceReader {
+func newSourceReader(searchPath, remotePath string) *sourceReader {
 	return &sourceReader{
 		searchPath,
+		remotePath,
 		make(map[string][]string),
 		make(map[string]error),
 	}
@@ -544,7 +551,7 @@ func (reader *sourceReader) line(path string, lineno int) (string, bool) {
 	if !ok {
 		// Read and cache file contents.
 		lines = []string{""} // Skip 0th line
-		f, err := openSourceFile(path, reader.searchPath)
+		f, err := openSourceFile(path, reader.searchPath, reader.remotePath)
 		if err != nil {
 			reader.errors[path] = err
 		} else {
@@ -565,11 +572,13 @@ func (reader *sourceReader) line(path string, lineno int) (string, bool) {
 	return lines[lineno], true
 }
 
-// openSourceFile opens a source file from a name encoded in a
-// profile. File names in a profile after often relative paths, so
-// search them in each of the paths in searchPath (or CWD by default),
-// and their parents.
-func openSourceFile(path, searchPath string) (*os.File, error) {
+// openSourceFile opens a source file from a name encoded in a profile. File
+// names in a profile after can be relative paths, so search them in each of
+// the paths in searchPath and their parents. In case the profile contains
+// absolute paths, remote paths can be configured to strip from source path in
+// the profile. This effectively turns the path into a relative path searching
+// it using searchPath as usual).
+func openSourceFile(path, searchPath, remotePath string) (*os.File, error) {
 	if filepath.IsAbs(path) {
 		f, err := os.Open(path)
 		return f, err
