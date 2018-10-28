@@ -565,7 +565,7 @@ func parseHeapHeader(line string) (sampling string, period int64, hasAlloc bool,
 		}
 	}
 
-	if (header[3] != header[1] && header[3] != "0") || (header[4] != header[2] && header[4] != "0") {
+	if header[3] != "0" || header[4] != "0" {
 		hasAlloc = true
 	}
 

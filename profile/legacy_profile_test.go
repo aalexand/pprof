@@ -282,6 +282,22 @@ func TestParseThreadProfileWithInvalidAddress(t *testing.T) {
 	}
 }
 
+func TestParseHeapProfileWithSingleSample(t *testing.T) {
+	profile := `heap profile:      1:       32 [     1:       32] @ heapprofile
+     1:       32 [     1:       32] @ 0x004349a3 0x0188238d
+
+MAPPED_LIBRARIES:
+00400000-02312000 r-xp 00000000 00:00 15213711    /home/user/binary
+	`
+	p, err := parseHeap([]byte(profile))
+	if err != nil {
+		t.Fatalf("parseHeap(): got error %q, want no error", err)
+	}
+	if gotNumSampleTypes := len(p.SampleType); gotNumSampleTypes != 4 {
+		t.Errorf("parseHeap(): got %d sample types, want 4", gotNumSampleTypes)
+	}
+}
+
 func TestParseGoCount(t *testing.T) {
 	for _, test := range []struct {
 		in  string
