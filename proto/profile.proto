@@ -53,6 +53,9 @@ message Profile {
   // by the sample, by convention it should be at index 0 and use
   // sample_type.unit == "count".
   repeated ValueType sample_type = 1;
+  // The set of call stacks recorded in this profile. When non-empty, all
+  // samples must use callstack_id field, not the deprecated location_id field.
+  repeated Callstack callstack = 15;
   // The set of samples recorded in this profile.
   repeated Sample sample = 2;
   // Mapping from address ranges to the image/binary/library mapped
@@ -107,8 +110,10 @@ message ValueType {
 // indicator of a higher level request being handled etc.
 message Sample {
   // The ids recorded here correspond to a Profile.location.id.
-  // The leaf is at location_id[0].
+  // The leaf is at location_id[0]. Deprecated, use callstack_id.
   repeated uint64 location_id = 1;
+  // Call stack ID, index into the Profile.callstacks array.
+  int32 callstack_id = 4;
   // The type and unit of each value is defined by the corresponding
   // entry in Profile.sample_type. All samples must have the same
   // number of values, the same as the length of Profile.sample_type.
@@ -125,6 +130,16 @@ message Sample {
   // discouraged case is having a string label and a numeric label of the same
   // name on a sample.  Again, possible to express, but should not be used.
   repeated Label label = 3;
+}
+
+message Callstack {
+  // The ids recorded here correspond to a Profile.location.id.
+  // The leaf is at location_id[0].
+  repeated uint64 location_id = 1;
+  // Call stack CAS-style "deep" 128-bit hash, when present. Can be present to
+  // speed up merge of profiles. It can also be used to avoid transferring call
+  // stacks already seen previously to implement quasi-stateful protocols.
+  string hash = 2;
 }
 
 message Label {
